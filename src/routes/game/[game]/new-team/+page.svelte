@@ -56,97 +56,176 @@
   }
 </script>
 
-<div class="flex flex-wrap">
-  <div class="w-screen flex justify-center">
-    <div class="grid grid-cols-6 gap-2 w-full max-w-5xl">
-      {#each Array(6) as _, i}
-        <div
-          class="aspect-square w-full card shadow-sm flex items-center justify-center bg-red-200"
-        >
-          {#if selected[i] !== undefined}
-            <img
-              src={pokemon[selected[i]].sprite}
-              alt={pokemon[selected[i]].name}
-              class="max-h-full max-w-full object-contain"
-            />
-          {/if}
-        </div>
-      {/each}
+<div class="min-h-screen bg-white">
+  <!-- Header with Team Slots -->
+  <div class="bg-black text-white p-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="grid grid-cols-6 gap-4">
+        {#each Array(6) as _, i}
+          <div
+            class="aspect-square bg-gray-800 border-2 border-gray-600 rounded-lg flex items-center justify-center overflow-hidden"
+          >
+            {#if selected[i] !== undefined}
+              <img
+                src={pokemon[selected[i]].sprite}
+                alt={pokemon[selected[i]].name}
+                class="max-h-full max-w-full object-contain"
+              />
+            {:else}
+              <div class="text-gray-400 text-xs text-center">
+                Slot {i + 1}
+              </div>
+            {/if}
+          </div>
+        {/each}
+      </div>
     </div>
   </div>
 
-  <div class="w-1/2 mx-auto flex flex-col items-center">
-    <div
-      class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 w-full mb-4"
-    >
-      {#each pokemon.slice((page - 1) * perPage, page * perPage) as v, i}
-        <div
-          class="card w-full shadow-sm cursor-pointer hover:bg-red-200"
-          class:bg-red-200={selected.includes(i + (page - 1) * perPage)}
-          onclick={() => handleClick(i + (page - 1) * perPage)}
-        >
-          <figure>
-            <img src={v.sprite} alt={v.name} />
-          </figure>
-        </div>
-      {/each}
-    </div>
-
-    <div
-      class="join sticky bottom-0 bg-base-100 w-full flex justify-center py-2"
-    >
-      <button class="join-item btn" onclick={prevPage}>«</button>
-      <button class="join-item btn">Page {page}</button>
-      <button class="join-item btn" onclick={nextPage}>»</button>
-    </div>
-  </div>
-
-  <div class="w-1/2 bg-yellow-100 rounded-xl">
-    {#if selectedPokemon}
-      <div>
-        <div class="card w-full shadow-sm">
-          <figure>
-            <img src={selectedPokemon.sprite} alt="Shoes" />
-          </figure>
-
-          <div class="card-body">
-            <h2 class="card-title justify-center">
-              {toTitleCase(selectedPokemon.name)}
-            </h2>
-
-            <div class="justify-center">
-              Typing:
-              {#each selectedPokemon.types as type}
-                {toTitleCase(type) + " "}
-              {/each}
-            </div>
-
-            <p>
-              {#each selectedPokemon.stats as stat}
-                <div>
-                  {toTitleCase(stat.name)} : {stat.stat}
-                  <progress value={stat.stat} max="100" class="duration-2000" />
-                </div>
-              {/each}
-            </p>
-
-            <div class="justify-center">
-              Obtain:
-              {#if selectedPokemon.locations.find( (lo) => lo.versions.includes(game) )}
-                {toTitleCase(
-                  selectedPokemon.locations.find((lo) =>
-                    lo.versions.includes(game)
-                  ).location_area
-                )}
-              {:else}
-                Evolve
-              {/if}
+  <div class="flex">
+    <!-- Pokemon Selection Grid -->
+    <div class="w-1/2 p-6">
+      <h2 class="text-xl font-semibold text-black mb-4">Select Pokémon</h2>
+      <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-6">
+        {#each pokemon.slice((page - 1) * perPage, page * perPage) as v, i}
+          <div
+            class="bg-white border-2 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md overflow-hidden"
+            class:border-red-600={selected.includes(i + (page - 1) * perPage)}
+            class:bg-red-50={selected.includes(i + (page - 1) * perPage)}
+            class:border-gray-200={!selected.includes(i + (page - 1) * perPage)}
+            onclick={() => handleClick(i + (page - 1) * perPage)}
+          >
+            <div class="aspect-square p-2">
+              <img
+                src={v.sprite}
+                alt={v.name}
+                class="w-full h-full object-contain"
+              />
             </div>
           </div>
-
-          <button class="btn btn-secondary" onclick={save}>Save Team</button>
-        </div>
+        {/each}
       </div>
-    {/if}
+
+      <!-- Pagination -->
+      <div class="flex justify-center items-center space-x-2">
+        <button
+          class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          onclick={prevPage}
+          disabled={page === 1}
+        >
+          ← Previous
+        </button>
+        <span class="text-black font-medium px-4">Page {page}</span>
+        <button
+          class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          onclick={nextPage}
+          disabled={page * perPage >= pokemon.length}
+        >
+          Next →
+        </button>
+      </div>
+    </div>
+
+    <!-- Pokemon Details Panel -->
+    <div class="w-1/2 bg-gray-50 p-6 border-l-2 border-gray-200">
+      {#if selectedPokemon}
+        <div
+          class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+        >
+          <!-- Pokemon Image -->
+          <div class="bg-gray-100 p-8 text-center">
+            <img
+              src={selectedPokemon.sprite}
+              alt={selectedPokemon.name}
+              class="w-32 h-32 mx-auto object-contain"
+            />
+          </div>
+
+          <!-- Pokemon Info -->
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-black text-center mb-4">
+              {toTitleCase(selectedPokemon.name)}
+            </h3>
+
+            <!-- Types -->
+            <div class="mb-6 text-center">
+              <span class="text-sm font-medium text-gray-600 block mb-2"
+                >Type</span
+              >
+              <div class="flex justify-center space-x-2">
+                {#each selectedPokemon.types as type}
+                  <span
+                    class="bg-black text-white px-3 py-1 rounded-full text-sm font-medium"
+                  >
+                    {toTitleCase(type)}
+                  </span>
+                {/each}
+              </div>
+            </div>
+
+            <!-- Stats with Animated Progress Bars -->
+            <div class="mb-6">
+              <div class="space-y-3">
+                {#each selectedPokemon.stats as stat}
+                  <div>
+                    <div class="flex justify-between items-center mb-1">
+                      <span class="text-sm font-medium text-gray-700">
+                        {toTitleCase(stat.name)}
+                      </span>
+                      <span class="text-sm font-bold text-black"
+                        >{stat.stat}</span
+                      >
+                    </div>
+                    <div
+                      class="w-full bg-gray-200 rounded-full h-3 overflow-hidden"
+                    >
+                      <div
+                        class="h-full bg-red-600 rounded-full transition-all duration-1000 ease-out"
+                        style="width: {Math.min((stat.stat / 150) * 100, 100)}%"
+                      ></div>
+                    </div>
+                  </div>
+                {/each}
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="mb-6">
+              <span class="text-sm font-medium text-gray-600 block mb-2"
+                >How to Obtain</span
+              >
+              <div class="bg-gray-100 rounded-lg p-3">
+                <span class="text-sm font-medium text-black">
+                  {#if selectedPokemon.locations.find( (lo) => lo.versions.includes(game) )}
+                    📍 {toTitleCase(
+                      selectedPokemon.locations.find((lo) =>
+                        lo.versions.includes(game)
+                      ).location_area
+                    )}
+                  {:else}
+                    🔄 Evolution Required
+                  {/if}
+                </span>
+              </div>
+            </div>
+
+            <!-- Save Button -->
+            <button
+              class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              onclick={save}
+              disabled={selected.length === 0}
+            >
+              Save Team ({selected.length}/6)
+            </button>
+          </div>
+        </div>
+      {:else}
+        <div class="text-center py-16">
+          <p class="text-gray-500">
+            Click on any Pokémon to see its details and stats
+          </p>
+        </div>
+      {/if}
+    </div>
   </div>
 </div>
