@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap');
+
+@import 'tailwindcss';
+@plugin "daisyui" {
+  themes: emerald;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Title Screen CSS */
+
+.titleBackground {
+  flex-grow: 1;
+  background-color: lightblue;
+  background-image: url(https://images.unsplash.com/photo-1698921973797-01021d536345?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+  background-size: cover;
+  background-position: center;
+}
+
+.title {
+  color: white;
+  font-family: 'Funnel Display', sans-serif;
+  font-size: clamp(40px, 20vw, 80px);
+  text-align: center;
+}
+
+.title span {
+  display: block;
+}
+
+.homeBox {
+  text-align: center;
+}
+
+.homeText {
+  color: white;
+  font-family: 'Funnel Display', sans-serif;
+  font-size: clamp(20px, 10vw, 40px);
+  border: 1px solid white;
+  padding: 0.1em;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: inline-block;
+}
+
+/* Game Select Screen */
+.game {
+  border: 1px solid black;
+  margin: 2vh;
+}
+
+.align {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-content: space;
+  align-items: center;
+}
