@@ -1,6 +1,7 @@
 <script>
   export let data;
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
 
   let roster = []; // array of teams
 
@@ -79,12 +80,20 @@
             <!-- Team Header -->
             <div class="flex justify-between items-center mb-4">
               <h3 class="text-xl font-bold text-black">Team {ti + 1}</h3>
-              <button
-                class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors duration-200"
-                onclick={() => deleteTeam(ti)}
-              >
-                Delete Team
-              </button>
+              <div class="flex items-center space-x-2">
+                <button
+                  class="bg-blue-600 hover:bg-blue-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors duration-200"
+                  on:click={() => goto(`/game/${data.game}/coverage/${ti}`)}
+                >
+                  Coverage
+                </button>
+                <button
+                  class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors duration-200"
+                  on:click={() => deleteTeam(ti)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
 
             <!-- Pokemon Grid -->
