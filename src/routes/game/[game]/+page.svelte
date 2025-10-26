@@ -4,8 +4,12 @@
 
   let roster = []; // array of teams
 
+  function getStorageKey() {
+    return `teams-${data.game}`; // each game has its own storage key
+  }
+
   function loadTeams() {
-    const r = localStorage.getItem("all-teams");
+    const r = localStorage.getItem(getStorageKey());
     roster = r ? JSON.parse(r) : [];
   }
 
@@ -16,7 +20,7 @@
   function deleteTeam(index) {
     roster.splice(index, 1);
     roster = [...roster];
-    localStorage.setItem("all-teams", JSON.stringify(roster));
+    localStorage.setItem(getStorageKey(), JSON.stringify(roster));
   }
 
   function toTitleCase(str) {

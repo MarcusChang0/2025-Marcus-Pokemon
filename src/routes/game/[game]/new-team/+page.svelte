@@ -25,15 +25,15 @@
     }
   }
 
+  function getStorageKey() {
+    return `teams-${game}`;
+  }
+
   function save() {
     let team = pokemon.filter((_, i) => selected.includes(i));
-
-    let allTeams = JSON.parse(localStorage.getItem("all-teams")) || [];
-
+    let allTeams = JSON.parse(localStorage.getItem(getStorageKey())) || [];
     allTeams.push(team);
-
-    localStorage.setItem("all-teams", JSON.stringify(allTeams));
-
+    localStorage.setItem(getStorageKey(), JSON.stringify(allTeams));
     goto(`/game/${game}`);
   }
 
