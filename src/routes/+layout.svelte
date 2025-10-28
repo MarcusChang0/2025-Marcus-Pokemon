@@ -13,7 +13,7 @@
           src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
           class="h-8"
         />
-        Poke Game Planner</a
+        Pokémon Game Planner</a
       >
     </div>
     <div class="flex-none">

@@ -3,7 +3,7 @@
 
 	<div class="title">
 		<div>
-			<span>Poké Game</span>
+			<span>Pokémon Game</span>
 			<span>Planner</span>
 		</div>
 	</div>
